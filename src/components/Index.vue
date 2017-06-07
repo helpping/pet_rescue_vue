@@ -18,10 +18,10 @@
         </div>
         <div id="banner">
             <div class="banner-section">
-                <a href="#">
+                <router-link to="/news/">
                     <img src="../assets/img/banner-1.png" alt="">
                     <span class="banner-word">新闻</span>
-                </a>
+                </router-link>
                 <a href="#">
                     <img src="../assets/img/banner-2.png" alt="">
                     <span class="banner-word">领养</span>
@@ -62,22 +62,19 @@
             <div id="tab-content">
                 <div class="tab-content-container">
                     <div class="news" v-show="currentIndex==0">
+                        <!--新闻列表start-->
                         <news-list :news-list="newsList"></news-list>
-                        <loaded v-show="show"></loaded>
+                        <!--新闻列表end-->
                     </div>
                     <div class="lost" v-show="currentIndex==1">
-                        <div class="news-detail">
-                            <div class="news-image">
-                                <img src="../assets/img/news/1.jpg" alt="">
-                            </div>
-                            <div class="news-content">
-                                <a href="#"><h6>标题</h6></a>
-                                <p>虎虎呼</p>
-                            </div>
-                        </div>
+                        <!--遗失列表start-->
+                        <seek-list :seek-list="seekList"></seek-list>
+                        <!--遗失列表end-->
                     </div>
                     <div class="volunteer" v-show="currentIndex==2">
-                        呼呼呼呼
+                        <!--志愿列表start-->
+                        <volunteer-list :vol-list="volList"></volunteer-list>
+                        <!--志愿列表end-->
                     </div>
                 </div>
             </div>
@@ -100,55 +97,39 @@
     import '../assets/js/rem.js'
     import Axios from 'axios'
     import NewsList from './NewsList'
-    import Loaded from './Loaded'
+    import SeekList from './SeekList'
+    import VolunteerList from './VolunteerList'
     export default {
         components : {
             NewsList,
-            Loaded
+            SeekList,
+            VolunteerList
         },
         data(){
             return {
                 currentIndex : 0,
                 newsList : [],
-                pageSize : 1,
-                page : 1,
-                isLoaded : true,
-                isEnd : false,
-                show : false
+                seekList : [],
+                volList : []
             }
         },
         methods : {
             changeTab : function(index){
                 this.currentIndex = index;
             },
-            loadNews : function(page){
-                Axios.get('http://127.0.0.1/pet_rescue_ci/news/get_news', {
-                    params : {
-                        pageSize : this.pageSize,
-                        page : page
-                    }
+            loadNews : function(){
+                Axios.get('http://127.0.0.1/pet_rescue_ci/welcome/get_info', {
+
                 }).then((res) => {
-                    this.newsList = this.newsList.concat(res.data.news);
-                    this.isLoaded = true;
-                    this.isEnd = res.data.isEnd;
+                    //console.log(res.data);
+                    this.newsList = res.data.news;
+                    this.seekList = res.data.seek;
+                    this.volList = res.data.vol;
                 });
             }
         },
         mounted : function(){
-            var _this = this;
-            _this.loadNews(_this.page);
-            $(window).on('scroll', function(){
-                if(_this.isEnd){
-                  _this.show = true;
-                  return;
-                }
-                if(_this.isLoaded){
-                  _this.page++;
-                  _this.isLoaded = false;
-                  _this.loadNews(_this.page);
-                }
-
-            });
+            this.loadNews();
         }
     }
 </script>

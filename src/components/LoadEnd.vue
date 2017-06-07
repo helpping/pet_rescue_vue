@@ -9,12 +9,10 @@
     #loaded{
       width: 100%;
       height: 0.3rem;
-      background: #787878;
+      background: #707070;
       color: #ffffff;
       text-align: center;
       line-height: 0.3rem;
-      padding: 0 0.2rem;
-      margin-left: -0.2rem;
-      margin-right: -0.2rem;
+      font-size: 0.16rem;
     }
 </style>
