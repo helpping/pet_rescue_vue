@@ -10,9 +10,9 @@
                     <img src="../assets/img/logo.png" alt="">
                 </div>
                 <div class="header-img">
-                    <a href="#">
+                    <router-link to="/user-information/">
                         <img src="../assets/img/header.png" alt="">
-                    </a>
+                    </router-link>
                 </div>
             </div>
         </div>
